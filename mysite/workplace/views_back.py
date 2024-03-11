@@ -32,7 +32,7 @@ def members_add(request):
         data = json.loads(request.body)
         email = data.get('email')
         discord_id = data.get('discord_account_id')
-        services.members_add(email, discord_id)
+        result.message = services.members_add(email, discord_id)
         result.is_success = True
         return JsonResponse(result.toDict(), status=200)
     except Exception as e:
@@ -43,7 +43,7 @@ def members_add(request):
 
 def commute(request):
     result = default_result()
-    result.message = 'https://workplace.cono.kr 에 로그인해주세요.'
+    result.message = 'https://workplace.cono.kr 로그인해주세요.'
     try:
         discord_id = request.GET.get('discord_id')
         start_date = request.GET.get('start_date')

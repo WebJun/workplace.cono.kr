@@ -30,6 +30,7 @@ def members_add(email, discord_id):
     remove_duplicate_members(email, discord_id)
     Member.objects.create(email=crypto.encrypts(email),
                           discord_id=crypto.encrypts(discord_id))
+    return '등록 완료. https://workplace.cono.kr 로그인해주세요'
 
 
 def remove_duplicate_members(email, discord_id):
@@ -103,4 +104,4 @@ def get_member(field, value):
         if decrypted_value == value:
             return Member.objects.get(**{field: encrypted_value})
 
-    raise Member.DoesNotExist(f'등록되지 않은 회원입니다.({field})')
+    raise Member.DoesNotExist(f'먼저, 계정을 등록해주세요.')

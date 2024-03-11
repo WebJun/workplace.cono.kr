@@ -2,9 +2,10 @@ import discord  # pip install py-cord
 from create_logger import create_logger
 from config import env
 from services import Services
+import os
 
 logger = create_logger('main')
-logger.info('서버 시작')
+logger.info(f'서버 시작 pid:{os.getpid()}')
 bot = discord.Bot()
 
 bot.description = 'WorkPlace에서 출퇴근을 가져옵니다.'

@@ -12,12 +12,8 @@ parse = Parse()
 class Services:
 
     async def add_account(self, email, discord_account_id):
-        try:
-            res = await api.add_account(email, discord_account_id)
-            return res
-        except Exception as e:
-            logger.exception(e)
-            return False
+        res = await api.add_account(email, discord_account_id)
+        return res.message
 
     async def get_commute_info(self, ctx, user_id):
         task1 = asyncio.create_task(self.async_waiting(ctx))
