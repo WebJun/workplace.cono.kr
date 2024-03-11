@@ -1,0 +1,8 @@
+### 
+POST {{local_api}}/api/members
+content-type: application/json
+
+{
+    "email": "example@cowave.kr",
+    "discord_account_id": "1234617623950860551"
+}
