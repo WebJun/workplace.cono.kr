@@ -43,49 +43,45 @@
 
 </main>
 
-
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0/js/bootstrap.bundle.min.js"
     integrity="sha512-Tkt/sYlAym9X81DPqqbCjU6bMl9HmsehhtxjnZu0K1TN9Ygu8h2D7jZbn59lbDNbbIG7DUukGkjKJbp/wDpKGg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"
     integrity="sha512-95iy0RZIbw3H/FgfAj2wnCQJlzFQ+eaSfUeV/l8WVyGHKSRMzm3M/O+85j9ba/HFphkijrCTDjcuDX0BL2lthA=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"
-    integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-    const csrfTokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
-    const csrfTokenValue = csrfTokenInput.value;
 
     class Api {
-        constructor() {
-            this.csrfToken = csrfTokenValue;
+        config = {}
+        constructor(BASE_URL = '') {
+            this.BASE_URL = BASE_URL;
+        }
+
+        async postData(url, data = {}) {
+            try {
+                const ajaxData = {
+                    method: 'POST',
+                    headers: { ...this.config.headers, 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                };
+                const response = await fetch(`${this.BASE_URL}${url}`, ajaxData);
+                const res = await response.json();
+                return res;
+            } catch (error) {
+                console.error(error);
+                return false;
+            }
         }
 
         async membersLogin(email, password) {
-            const encryptedEmail = encrypt(email);
-            const encryptedPassword = encrypt(password);
-
-            const data = {
-                email: encryptedEmail,
-                password: encryptedPassword,
-            };
-
-            return await this.postData('/api/members/login', data);
-        }
-
-        async postData(url, data) {
-            const response = await axios.post(url, data, {
-                headers: {
-                    'X-CSRFToken': this.csrfToken,
-                }
+            return await this.postData('/api/members/login', {
+                email: encrypt(email),
+                password: encrypt(password),
             });
-
-            return response.data;
         }
     }
+
 
     const publicKeyPEM = `{{public_key}}`;
     const publicKey = forge.pki.publicKeyFromPem(publicKeyPEM);
@@ -121,6 +117,9 @@
     };
 
     const api = new Api();
+    api.config.headers = {
+        'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value
+    }
 
     const handleSubmit = async () => {
         const confirm_msg = '비밀번호가 서버에 암호화되어 저장됩니다. 계속하시겠습니까?';

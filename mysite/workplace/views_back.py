@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 logger = create_logger('views_back')
 
-
+###
 def members_login(request):
     result = default_result()
     try:
@@ -40,7 +40,7 @@ def members_add(request):
         logger.exception(e)
     return JsonResponse(result.toDict(), status=200)
 
-
+####
 def commute(request):
     result = default_result()
     result.message = 'https://workplace.cono.kr 로그인해주세요.'

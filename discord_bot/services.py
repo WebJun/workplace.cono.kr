@@ -65,7 +65,7 @@ class Services:
         data = await api.get_commute(start_date, end_date)
 
         if not data.is_success:
-            raise Exception('data.is_success ERROR')
+            raise Exception(data.message)
 
         result = parse.run(data.data)
         message = parse.create_message(result)
