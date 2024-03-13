@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 logger = create_logger('views_back')
 
-###
+
 def members_login(request):
     result = default_result()
     try:
@@ -40,7 +40,7 @@ def members_add(request):
         logger.exception(e)
     return JsonResponse(result.toDict(), status=200)
 
-####
+
 def commute(request):
     result = default_result()
     result.message = 'https://workplace.cono.kr 로그인해주세요.'
@@ -48,7 +48,8 @@ def commute(request):
         discord_id = request.GET.get('discord_id')
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
-        result.is_success, result.data = services.commute(discord_id, start_date, end_date)
+        result.is_success, result.data = services.commute(
+            discord_id, start_date, end_date)
         return JsonResponse(result.toDict(), status=200)
     except Exception as e:
         result.message = str(e)

@@ -25,6 +25,7 @@ class BrowserFactory:
             else:
                 options = webdriver.FirefoxOptions()
                 options.add_argument('--headless')
+                options.set_preference('intl.accept_languages', 'ko-KR')
                 driverPath = self.get_gecko_driver_path()
                 return webdriver.Firefox(service=FirefoxService(driverPath),
                                          options=options)
